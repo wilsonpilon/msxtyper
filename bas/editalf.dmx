@@ -1,0 +1,217 @@
+###
+	Programa: Editor de Caracteres MSX SCREEN 1/2
+	Autor: Wilson Pilon
+	Versao: 4.0 2023, Apr
+###
+define [clrkbuf][if inkey$ <> "" then goto {@}]
+define [waitkey][if inkey$ = "" then goto {@}]
+
+{inicio}
+on error goto {error}:
+gosub {inicializa}:
+gosub {screen_iv}:
+gosub {desktop}:
+gosub {menu}
+.keypress()
+end
+
+
+
+## Menu Principal
+{menu}
+	for temp=0 to max_opcao - 1:
+		[?](2,5+temp) opcoes$(temp):
+	next
+	temp$ = .inverte(opcoes$(opcao)):[?](2,5+cursor) temp$:
+	return
+
+
+
+## Desktop inicial
+{desktop}
+	[?](0,0) chr$(1);chr$(64+24);:
+	for temp=1 to 30:
+		print chr$(1);chr$(64+23);:
+	next temp:
+	[?](31,0) chr$(1);chr$(64+1);:
+	for temp=1 to 20:
+		[?](0,temp) chr$(1);chr$(64+22);:
+		[?](31,temp) chr$(1);chr$(64+2);:
+	next temp:
+	[?](0,21) chr$(1);chr$(64+3);
+	for temp=1 to 30:
+		print chr$(1);chr$(64+4);:
+	next temp:
+	[?](31,21) chr$(1);chr$(64+5);:
+	[?](0,2) chr$(1);chr$(64+20);:
+	for temp=1 to 30:
+		print chr$(1);chr$(64+23);:
+	next temp:
+	[?](32,2) chr$(1);chr$(64+0);:
+	[?](1,1);:
+	for temp=0 to 29:
+		print chr$(temp + 137);:
+	next temp
+	[?](28,1);:
+	for temp=123 to 125:
+		print chr$(temp);:
+	next temp:
+	return
+
+
+## Inicializacao do modo de edicao padrao, SCREEN 1+2
+{inicializa}
+	color 15,1,15:
+	screen 2:
+	screen 1:
+	width 32:
+	key off:
+	cursor = 0:
+	opcao = 0:
+	max_opcao = 9:
+	dim opcoes$(max_opcao):
+	restore {menu_data}:
+	for temp=0 to max_opcao - 1:
+		read opcoes$(temp):
+	next:
+	return
+
+{screen_iv}
+	defusr=&h7e:
+	byte=usr(0)
+##	bload "fonte.sc2",s:
+##	bload "color.sc2",s:
+##	return
+
+{recria_screen}
+	bload "editalf.alf",s,-&h1200:
+	for temp=0 to 2047:
+		byte=vpeek(temp):
+		vpoke &h800+temp,byte:
+		vpoke &h1000+temp,byte:
+	next temp:
+	for temp=0 to 7:
+		vpoke 2048+255*8+temp,255:
+		vpoke 4096+255*8+temp,255:
+	next temp
+	.charcolor(asc("0"),asc("9"),&h91,&h81,&h61)
+	.charcolor(asc("A"),asc("Z"),&h41,&h51,&h71)
+	.charcolor(asc("a"),asc("z"),&h41,&h51,&h71)
+	.charcolor(asc(" "),asc("/"),&hC1,&h21,&h31)
+	.charcolor(asc(":"),asc("@"),&hC1,&h21,&h31)
+	.charcolor(asc("["),asc("`"),&hC1,&h21,&h31)
+	.charcolor(137,145,&hA1,&hB1,&hB1)
+	.charcolor(0,31,&he1,&he1,&he1)
+	.charcolor(123,125,&hC1,&h21,&h31)
+	.charcolor(160,218,&h74,&h74,&h74)
+	.charcolor(225,250,&h74,&h74,&h74)
+	bsave "fonte.sc2",&h0,&h17ff,s:
+	bsave "color.sc2",&h2000,&h37ff,s:
+	return
+
+{error}
+	num_erro = err:
+	lin_erro = erl:
+
+	if num_erro = 53 and lin_erro = {screen_iv} then _
+		print "Gerando arquivos de fontes e cores":
+		gosub {recria_screen}:
+		bsave "fonte.sc2",&h0000,&h17ff,s:
+		bsave "color.sc2",&h2000,&h37ff,s:
+		goto {inicio}
+
+	if num_erro > 25 and num_erro < 50 or num_erro > 59 then num_erro = 23
+	if num_erro >= 50 then num_erro -= 24
+	restore {err_data}:
+	for temp = 1 to 59:
+		read str_erros$:
+		if num_erro = temp then _
+			[?](0,22) "Erro:";lin_erro;"/";num_erro:
+			print left$(str_erros$,32);:
+			goto {erro_out}
+	next temp
+	{erro_out}
+	.keypress()
+	end
+
+func .keypress()
+	[clrkbuf]
+	[waitkey]
+ret
+
+func .clearmsg()
+	[?](0,22) space$(32);:
+	[?](0,23) space$(32);:
+ret
+
+func .charcolor(inicial,final,cor1,cor2,cor3)
+	inicial = 8192 + 8 * inicial:
+	final = 8192 + 8 * final:
+	for temp = inicial to final step 8
+		vpoke temp    ,cor1:vpoke temp +     &h800, cor1:vpoke temp +     &h1000, cor1:
+		vpoke temp + 1,cor1:vpoke temp + 1 + &h800, cor1:vpoke temp + 1 + &h1000, cor1:
+		vpoke temp + 2,cor1:vpoke temp + 2 + &h800, cor1:vpoke temp + 2 + &h1000, cor1:
+		vpoke temp + 3,cor2:vpoke temp + 3 + &h800, cor2:vpoke temp + 3 + &h1000, cor2
+		vpoke temp + 4,cor2:vpoke temp + 4 + &h800, cor2:vpoke temp + 4 + &h1000, cor2:
+		vpoke temp + 5,cor2:vpoke temp + 5 + &h800, cor2:vpoke temp + 5 + &h1000, cor2:
+		vpoke temp + 6,cor3:vpoke temp + 6 + &h800, cor3:vpoke temp + 6 + &h1000, cor3:
+		vpoke temp + 7,cor3:vpoke temp + 7 + &h800, cor3:vpoke temp + 7 + &h1000, cor3:
+	next
+ret
+
+
+func .inverte(corrente$)
+	invertida$ = "":
+	for temp = 1 to len(corrente$):
+		invertida$ = invertida$ + chr$(asc(mid$(corrente$,temp,1))+128):
+	next temp:
+ret invertida$
+
+{err_data}
+	data NEXT sem FOR, _
+		Erro de Sintaxe, _
+		RETURN sem GOSUB, _
+		Termino de Dados, _
+		Funcao Ilegal, _
+		Sobrecarga, _
+		Falta Memoria, _
+		Linha Indefinida, _
+		Subscrito Invalido, _
+		Matriz Redimensionada, _
+		Divisao por Zero, _
+		Comando Direto Ilegal
+	data Tipo de Variavel Invalido, _
+		Falta Espaco Para Strings, _
+		String Muito Longa, _
+		Formula de String Muito Complexa, _
+		Impossivel continuar, _
+		Funcao Indefinida, _
+		Erro de E/S, _
+		Nao Gravou, _
+		Falta RESUME, _
+		RESUME Sem Erro, _
+		Erro Nao Imprimivel, _
+		Sobrecarga na linha
+	data Excedeu Buffer, _
+		Excedeu Campo, _
+		Erro Interno, _
+		Numero de Arquivo Invalido, _
+		Arquivo Nao Encontrado, _
+		Arquivo Ja Aberto, _
+		INPUT Apos fim, _
+		Nome de Arquivo Invalido, _
+		Comando Direto no Arquivo, _
+		So E/S Sequencial, _
+		Arquivo nao Aberto, _
+		Erro Nao Imprimivel 
+
+{menu_data}
+	data Editar Fonte Alfabeto, _
+		Carregar Alfabeto Graphos, _
+		Alterar Cores Modo A, _
+		Alterar Cores Modo B, _
+		Salvar Alfabeto, _
+		Carregar Alfabeto, _
+		Reiniciar Alfabeto, _
+		Carregar da ROM, _
+		Encerrar

@@ -1,0 +1,65 @@
+define [waitkey][aa$=inkey$:if aa$="" then {@}]
+define [clrbuf][aa$=inkey$:if aa$<>"" then {@}]
+
+gosub {inicializa}:
+gosub {desktop}
+[clrbuf]
+[waitkey]
+end
+
+{inicializa}
+	dim opcoes$(20):
+	restore {menu_data}:
+	max_opcao=0:
+	max_view=10:
+	cursor=0
+	read temp$:
+	if(temp$ <> "@") then _
+		max_opcao += 1:
+		opcoes$(max_opcao) = temp$:
+		goto {@}
+	return
+
+{menu_data}
+	data Opcao 1, _
+		Opcao 2, _
+		Opcao 3, _
+		Opcao 4, _
+		Opcao 5, _
+		Opcao 6, _
+		Opcao 7, _
+		Opcao 8, _
+		Opcao 9, _
+		Opcao 10, _
+		Opcao 11, _
+		Opcao 12, _
+		Opcao 13, _
+		@
+
+
+
+{desktop}
+	screen 2:
+	open "grp:" for output as #1:
+	gosub {msx_logo}:
+	line (1,73)-(254,190),4,bf:
+	line (0,73)-(255,191),15,b:
+	temp = 0
+	pset (10,70+temp*11),point(10,70+temp*11):print #1,opcoes$(temp):
+	temp += 1: 
+	if temp <= max_opcao and temp <= max_view then _ 
+		goto {@} _
+	else
+		return
+
+
+
+{msx_logo}
+	color 15:
+	draw "bm35,71m52,9m67,9m75,35m81,9m96,9m109,54m140,54bm141,47m124,47bm126,9m177,9m187,24m198,9m218,9m198,38m220,71m199,71m187,54m175,71m155,71m177,38m167,25m126,25bm35,71m53,71m60,48m66,71m82,71m89,48m96,71m143,71bm143,33m124,33"
+	circle(141,51),3,15,4.8,1.57:
+	circle (125,28),19,15,1.57,4.75:
+	circle (142,52),19,15,4.75,1.57:
+	circle (125,29),4,15,1.58,4.75:
+	paint(60,10),15:
+	return
