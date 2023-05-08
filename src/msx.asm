@@ -9,13 +9,15 @@ CALSLT: equ 01Ch        ;Chamada interslots
 CLS:    equ 0C3h        ;Limpa a tela
 POSIT:  equ 0C6h        ;Posiciona o caracter na tela 
 CHPUT:  equ 0A2h        ;Imprime caracter na tela
-CHGET:  equ 0F3E9h      ;Aguarada o pressionamento de tecla
+CHGET:  equ 09Fh        ;Aguarada o pressionamento de tecla
 INITXT: equ 06Ch        ;Inicia o modo SCREEN 0
 INIT32: equ 06Fh        ;Inicia o modo SCREEN 1
 INIGRP: equ 072h        ;Inicia o modo SCREEN 2
 SETGRP: equ 07Eh        ;Seta o VDP no modo SCREEN 2
 KILBUF: equ 156h        ;Limpa o buffer do teclado
-ERAFNK: equ 0FCC1h      ;Oculta teclas de funcao
+LDIRVM: equ 05Ch        ;Move dados da RAM para VRAM
+LDIRMV: equ 059h        ;Move dados da VRAM para RAM
+ERAFNK: equ 0CCh        ;Oculta teclas de funcao
 
 ;-- Chamadas do MSX-BASIC
 

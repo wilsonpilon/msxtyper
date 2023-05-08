@@ -11,10 +11,12 @@ cseg                    ;Codigo
 extrn Print             ;Impressao de zString via BIOS
 extrn Screen0           ;Inicializa o modo Screen 0
 extrn BIOS              ;Chamada da BIOS via MSX-DOS
+extrn LDAlfabeto        ;Carrega fonte na VRAM
 
 ;-- Laco Principal ---------------------
 Menu:
     call Screen0
+    call LDAlfabeto
     ld h,1
     ld l,2
     ld ix,Posit
@@ -23,8 +25,10 @@ Menu:
     call Print
     ld ix,KILBUF
     call BIOS
+    ld ix,CHGET
+    call BIOS
     jp 0
 dseg                    ;Dados
-    Hello:      db 10,"Hello!\0"
+    Hello:      db 10,"ABC -> Hello!\0"
 
 end
