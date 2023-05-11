@@ -2,10 +2,10 @@ TARGET = menu
 M80 = N80
 L80 = LK80
 LIB80 = LB80
-LFLAGS = --code 0100h --data 0200h
+LFLAGS = --code 0100h --data 0300h
 
 INC = msx.asm
-SOURCES = main.asm video.asm bios.asm screen.asm alfabeto.asm
+SOURCES = main.asm video.asm bios.asm screen.asm alfabeto.asm mathpack.asm
 OBJ = $(SOURCES:.asm=.rel)
 
 .PHONY: clean

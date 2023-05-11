@@ -1,20 +1,23 @@
 include msx.asm
+.relab
 
 cseg
 public LDAlfabeto
 extrn BIOS
 LDAlfabeto:
-    ld hl,ALFABETO+7
-    ld de,0800h
-    ld bc,0800h
-    ld ix,LDIRVM
-    call BIOS
+    ld hl,ALFABETO+7            ;Alfabeto convertido do Graphos (.BIN)
+    ld de,8000h                 ;Página 0 do DOS para página 2 da RAM
+    ld bc,800h                  ;2k de bytes
+    ldir                        ;transfere
+    ld hl,8000h                 ;Pela chamada no Slot 0
+    ld de,0800h                 ;Inicia a transferencia
+    ld bc,0800h                 ;de 2Kb
+    ld ix,LDIRVM                ;da RA para VRAM
+    call BIOS                   ;Chamada da BIOS em outro slot
     ret
-
 
 dseg
 ALFABETO:
-
     db 0FEh, 000h, 092h, 0FFh, 099h, 000h, 092h, 018h, 018h, 018h, 0F8h, 018h
     db 018h, 018h, 018h, 000h, 000h, 000h, 0F0h, 010h, 018h, 018h, 018h, 018h
     db 018h, 018h, 018h, 018h, 018h, 018h, 018h, 010h, 010h, 010h, 01Fh, 007h

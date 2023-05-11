@@ -1,4 +1,5 @@
 include msx.asm
+.relab
 
 cseg
 public BIOS
