@@ -6,7 +6,7 @@ public Write_Hex
 public Write_HexDig
 public Write_Char
 public Write_Decimal
-public Send_CR
+public ClearScreen
 extrn BIOS
 extrn Divide_WordByte
 Print:
@@ -114,26 +114,24 @@ Write_Char:
     ret                     ;E retorna
 
 ;-------------------------------------------------------------------------;
-; Esta rotina apenas envia um retorno de carro e um avanco de linha para  ;
-; a tela, usando a chamada 02 do BDOS, rolando a tela como no MSX-DOS     ;
+; Esta rotina limpa a tela texto do MSX usando a BIOS                     ;
+;                                                                         ;
+;        Z: A Flag Z deve estar setada                                    ;
 ;                                                                         ;
 ;-------------------------------------------------------------------------;
-Send_CR:
-        push af                 ;Salva Registradores
-        push bc
-        push de
-        push hl
-        ld c,CONOUT             ;
-        ld e,CR                 ;Imprime CD
-        call DOS                ;
-        ld c,CONOUT             ;
-        ld e,LF                 ;Imprime LF
-        call DOS                ;
-        pop hl                  ;Recupera Registradores
-        pop de
-        pop bc
-        pop af
-        ret
+ClearScreen:
+    push af
+    push bc
+    push de
+    ld ix,CLS
+    xor a
+    cp 0
+    call BIOS
+    pop de
+    pop bc
+    pop af
+    ret
+
 
 dseg
 end

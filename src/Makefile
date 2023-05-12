@@ -5,7 +5,7 @@ LIB80 = LB80
 LFLAGS = --code 0100h --data 0300h
 
 INC = msx.asm
-SOURCES = main.asm video.asm bios.asm screen.asm alfabeto.asm mathpack.asm
+SOURCES = main.asm video.asm bios.asm screen.asm alfabeto.asm mathpack.asm cursor.asm
 OBJ = $(SOURCES:.asm=.rel)
 
 .PHONY: clean
@@ -32,4 +32,4 @@ clean:
 	rm *.dsk
 
 run:
-	/usr/local/bin/openmsx -machine Boosted_MSX2_EN -diska ./$(TARGET).dsk &
+	'c:\Program Files\openMSX\openmsx.exe' -machine Boosted_MSX2_EN -diska ./$(TARGET).dsk &

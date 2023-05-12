@@ -14,30 +14,29 @@ extrn BIOS              ;Chamada da BIOS via MSX-DOS
 extrn LDAlfabeto        ;Carrega fonte na VRAM
 extrn Write_Hex         ;Imprime em Hexadecimal
 extrn Write_Decimal     ;Imprime em Decimal
+extrn GOTOXY            ;Posicona o cursor
+extrn ClearScreen       ;Limpa a tela
+extrn WaitKey           ;Aguarda Tecla
+extrn LastKey           ;Byte da ultima tecla pressionada
 
 ;-- Laco Principal ---------------------
 Menu:
     call Screen0
     call LDAlfabeto
-    ld h,1
-    ld l,2
-    ld ix,Posit
-    call BIOS
+    ld d,15
+    ld e,6
+    call GOTOXY
     ld hl,Hello
     call Print
 
     ld d,3Fh
     call Write_Hex
 
-    ld hl,800
+    ld hl,1234
     call Write_Decimal
-
-    ld ix,KILBUF
-    call BIOS
-    ld ix,CHGET
-    call BIOS
+    call LastKey
+    call ClearScreen
     jp 0
 dseg                    ;Dados
-    Hello:      db "Hello!\0"
-
+    Banner:     db "MSX - Menu\0"
 end

@@ -45,3 +45,6 @@ YELLOW:     equ 11
 DGREEN:     equ 12
 GRAY:       equ 14
 WHITE:      equ 15
+
+CR:         equ 13
+LF:         equ 10
