@@ -1,0 +1,11 @@
+1'Converted with Basic Dignified
+2'https://github.com/farique1/basic-dignified
+3gosub10 '>init
+4?"Hello"
+5a$=inkey$:ifa$<>""goto5 '<loop >@
+6a$=inkey$:ifa$=""goto6 '>@
+7ifa$=chr$(27)goto9 '>fim
+8goto5 '>loop
+9list:end '<fim
+10keyoff:screen1:width32:color12,1,1:bload"smenu.alf",s,-&h1200 '<init
+11zz=10:zy=0:zx=0:zw=0:forzv%=6144to6912:vpokezv%,215:nextzv%:locate0,0:vpoke6144,24:forzv%=1to30:vpoke6144+zv%,23:nextzv%:locate1,1:return

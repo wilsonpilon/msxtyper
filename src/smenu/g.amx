@@ -1,0 +1,6 @@
+1'Converted with Basic Dignified
+2'https://github.com/farique1/basic-dignified
+3screen12:cls:fory=0to31step3:yd=0:cls:fori=0to2:fork=-32to31:xd=0:forj=-32to31:pset(xd+0,yd),(y+i)*8+(kand7):pset(xd+1,yd),(y+i)*8+(kand56)/8:pset(xd+2,yd),(y+i)*8+(jand7):pset(xd+3,yd),(y+i)*8+(jand56)/8:xd=xd+4:nextj:yd=yd+1:nextk:nexti
+4ifinkey$=""then4 '>@
+5nexty
+6end

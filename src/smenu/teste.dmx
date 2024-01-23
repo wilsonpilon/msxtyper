@@ -1,0 +1,42 @@
+## ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»ÃãĨĩÕõŨũĲĳ¾∽◇‰¶§
+## ▂▚▆▔◾▇▎▞▊▕▉▨▧▼▲▶◀⧗⧓▘▗▝▖▒Δǂω█▄▌▐▀
+## αβΓπΣσμτΦθΩδ∞φ∈∩≡±≥≤⌠⌡÷≈°∙‐√ⁿ²
+## ❚■☺☻♥♦♣♠·◘○◙♂♀♪♬☼┿┴┬┤├┼│─┌┐└┘╳╱╲╂  
+
+gosub {init}
+print "Hello"
+loop{
+	a$=inkey$:
+	if a$<>"" then _
+		goto {@}
+	a$=inkey$:
+	if a$="" then _
+		goto {@}
+	if a$=chr$(27) then _
+		goto {fim}
+}
+
+{fim}
+	list:
+	end
+
+
+{init}
+	key off:
+	screen 1:
+	width 32:
+	color 12,1,1:
+	bload "smenu.alf",s,-&h1200
+	wopcoes = 10:
+	mopcoes = 0:
+	copcao = 0:
+	nopcao = 0:
+	for temp% = 6144 to 6912:
+		vpoke temp%,215:
+	next temp%:
+	locate 0,0:vpoke 6144,24:
+	for temp% = 1 to 30:
+		vpoke 6144+temp%,23:
+	next temp%:
+	locate 1,1:
+	return

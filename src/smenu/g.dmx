@@ -1,0 +1,21 @@
+screen 12:
+cls:
+for y=0 to 31 step 3:
+	yd=0:
+	cls:
+	for i=0 to 2:
+		for k=-32 to 31:
+			xd=0:
+			for j=-32 to 31:
+				pset(xd+0,yd),(y+i)*8+(k and 7):
+				pset(xd+1,yd),(y+i)*8+(k and 56)/8:
+				pset(xd+2,yd),(y+i)*8+(j and 7):
+				pset(xd+3,yd),(y+i)*8+(j and 56)/8:
+				xd=xd+4:
+			next j:
+			yd=yd+1:
+		next k:
+	next i
+	if inkey$="" then {@}
+next y
+end
