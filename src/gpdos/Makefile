@@ -5,7 +5,7 @@ LIB80 = LB80.exe
 LFLAGS = --code 0100h --data 0300h
 
 INC = msx.asm
-SOURCES = main.asm #video.asm bios.asm screen.asm alfabeto.asm mathpack.asm cursor.asm keyboard.asm
+SOURCES = main.asm bios.asm #video.asm screen.asm alfabeto.asm mathpack.asm cursor.asm keyboard.asm
 OBJ = $(SOURCES:.asm=.rel)
 
 .PHONY: clean
